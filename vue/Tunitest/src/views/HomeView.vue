@@ -2,6 +2,9 @@
 
 import { ref, watch, onMounted } from 'vue';
 import { nextTick } from 'vue';
+import axios from 'axios';
+import musicData from '/src/assets/data.json';
+console.log(musicData)
 //import fs from 'fs/promises';
 
 //import path from 'path';
@@ -15,8 +18,6 @@ const isRandom = ref(false);
 
 
 
-
-/*
 import music1 from '/src/assets/music/music1.mp3';
 import music2 from '/src/assets/music/music2.mp3';
 import music3 from '/src/assets/music/music3.mp3';
@@ -24,6 +25,7 @@ import music4 from '/src/assets/music/music4.mp3';
 import music5 from '/src/assets/music/music5.mp3';
 import music6 from '/src/assets/music/music6.mp3';
 import music7 from '/src/assets/music/music7.mp3';
+import music8 from '/src/assets/music/music8.mp3';
 
 import cover1 from '/src/assets/cover/cover1.jpeg';
 import cover2 from '/src/assets/cover/cover2.jpeg';
@@ -32,16 +34,16 @@ import cover4 from '/src/assets/cover/cover4.jpeg';
 import cover5 from '/src/assets/cover/cover5.jpeg';
 import cover6 from '/src/assets/cover/cover6.jpeg';
 import cover7 from '/src/assets/cover/cover7.jpeg';
+import cover8 from '/src/assets/cover/cover8.jpeg';
 
 
 
-const coverFiles = [cover1, cover2, cover3, cover4,cover5,cover6,cover7];
-const musicFiles = [music1, music2, music3,music4,music5,music6,music7];
-*/
+const coverFiles = [cover1, cover2, cover3, cover4,cover5,cover6,cover7,cover8];
+const musicFiles = [music1, music2, music3,music4,music5,music6,music7,music8];
 
 
-
-const url = "http://localhost:3000/music/"
+/*
+const url = "http://pauluxnetwork.synology.me:5668/webapi/entry.cgi"
 
 
 const coverFiles = [];
@@ -124,12 +126,15 @@ const nextAudio = () => {
   if (isRandom.value == false){
     if (currentMusicIndex.value === musicFiles.length) {
     currentMusicIndex.value = 1;
+    isPlay.value = true;
   } else {
     currentMusicIndex.value += 1;
+    isPlay.value = true;
   }
   }
   else{
-    currentMusicIndex.value = Math.floor(Math.random() * 7)+1
+    currentMusicIndex.value = Math.floor(Math.random() * 8)+1
+    isPlay.value = true;
   }
 
 
@@ -153,13 +158,16 @@ const prevAudio = () => {
   if (isRandom.value == false){
     if (currentMusicIndex.value === 1) {
     currentMusicIndex.value = musicFiles.length;
+    isPlay.value = true;
   } else {
     currentMusicIndex.value -= 1;
+    isPlay.value = true;
   }
   }
   else{
-    currentMusicIndex.value = Math.floor(Math.random() * 7)+1
+    currentMusicIndex.value = Math.floor(Math.random() * 8)+1
     console.log(currentMusicIndex.value)
+    isPlay.value = true;
   }
 
   actualAudio = musicFiles[currentMusicIndex.value - 1];
@@ -246,7 +254,7 @@ setInterval(timerSetup, 1000);
     <div class="single">
       <img :src="coverImageSrc">
       <div class="music">
-        <h2>{{ actualAudio.split('/').pop().split('.')[0] }}</h2>
+        <h2>{{ musicData[currentMusicIndex-1].name }}</h2>
       <div ref="timerSetup" ><p id="timer"> {{ timerCount }} / {{ duration}}</p></div>
         
         <audio id="myaudio" ref="audioElement"   control v-if="AudioNow.src">
