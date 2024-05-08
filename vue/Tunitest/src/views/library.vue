@@ -1,20 +1,44 @@
+<script setup>
+    import musicData from '/src/assets/data.json';
+
+    import cover1 from '/src/assets/cover/cover1.jpeg';
+    import cover2 from '/src/assets/cover/cover2.jpeg';
+    import cover3 from '/src/assets/cover/cover3.jpeg';
+    import cover4 from '/src/assets/cover/cover4.jpeg';
+    import cover5 from '/src/assets/cover/cover5.jpeg';
+    import cover6 from '/src/assets/cover/cover6.jpeg';
+    import cover7 from '/src/assets/cover/cover7.jpeg';
+    import cover8 from '/src/assets/cover/cover8.jpeg';
+    const coverFiles = [cover1, cover2, cover3, cover4,cover5,cover6,cover7,cover8];
+
+
+</script>
+
 <template>
   <main>
+  
     <div class="logo">
         <svg width="40" height="40" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M30.3311 5.17065C30.3311 5.17065 16.1427 -3.4984 6.57209 1.61342C-2.99853 6.72426 0.185223 24.0925 2.00174 31.3658C3.8173 38.639 7.71371 39.692 13.201 38.6673C18.6893 37.6416 32.4633 33.5282 37.7212 22.3081C42.98 11.088 30.3311 5.17065 30.3311 5.17065ZM10.5537 15.5375C9.89915 17.7563 9.73648 20.1252 9.69775 21.335C9.68129 21.8493 9.30946 22.2808 8.80789 22.3753C8.79917 22.3772 8.78949 22.3792 8.78077 22.3802C8.14848 22.498 7.55491 22.0422 7.49585 21.3983C7.24893 18.7275 7.99549 16.1521 8.46124 14.8547C8.66652 14.2829 9.29494 13.9839 9.86139 14.1962C9.87495 14.2011 9.8885 14.2059 9.90206 14.2108C10.4298 14.4124 10.7145 14.993 10.5537 15.5375ZM16.2531 14.5215C15.2461 17.9327 14.9963 21.5756 14.9372 23.4351C14.912 24.2182 14.3504 24.8825 13.5845 25.0276C13.5612 25.0325 13.538 25.0364 13.5148 25.0413C12.5542 25.2185 11.646 24.5279 11.5549 23.551C11.1696 19.4337 12.3218 15.4615 13.0393 13.4657C13.356 12.5861 14.3233 12.1361 15.1948 12.4634C15.2083 12.4682 15.2219 12.4731 15.2354 12.478C16.0536 12.7887 16.502 13.678 16.2531 14.5215ZM21.3754 26.3241C21.3386 27.4657 20.5146 28.4242 19.3981 28.6345C19.3788 28.6384 19.3584 28.6423 19.3381 28.6462C17.9408 28.9063 16.6249 27.9011 16.4923 26.478C15.9423 20.547 17.601 14.8274 18.6351 11.95C19.0892 10.6877 20.4797 10.0273 21.7307 10.4938C21.7579 10.5036 21.785 10.5143 21.8111 10.524C22.9973 10.976 23.6257 12.2744 23.2655 13.4978C21.8208 18.408 21.4616 23.6445 21.3754 26.3241ZM27.4921 16.4131C26.609 19.4093 26.3902 22.6061 26.3379 24.2387C26.3156 24.9283 25.8189 25.5108 25.145 25.6384C25.1295 25.6413 25.1149 25.6442 25.1004 25.6471C24.2551 25.804 23.4485 25.2088 23.3672 24.3487C23.0263 20.7292 24.0392 17.2352 24.6705 15.48C24.9484 14.7076 25.7986 14.3121 26.5645 14.5995C26.5761 14.6033 26.5887 14.6082 26.6003 14.6121C27.3207 14.8868 27.7109 15.6709 27.4921 16.4131ZM30.7204 18.4236C30.2527 20.0132 30.1365 21.709 30.1084 22.575C30.0968 22.9412 29.8334 23.2519 29.4752 23.3201C29.4684 23.3211 29.4606 23.323 29.4529 23.324C28.9988 23.4088 28.5727 23.0854 28.5291 22.6227C28.3519 20.7058 28.8874 18.857 29.2224 17.9258C29.3706 17.5119 29.8247 17.3024 30.2343 17.4563C30.2411 17.4593 30.2469 17.4612 30.2537 17.4641C30.6362 17.6102 30.8366 18.0291 30.7204 18.4236Z" fill="white"/>
         </svg>
-        <h1>Tunity</h1>
     </div>
   <div class="hero">
-    <h2>Library</h2>
-
-    <audio
-    v-for="(audio, index) in 6"  
-    :src="'http://localhost:3000/music/music' + (index + 1) + '.mp3'">
-  </audio>
-
+    <h2>File d'attente</h2>
+    <div class ="listSong">
+       <div class="listSong">
+        <div v-for="(song, index) in musicData.playlist1  " :key="index" class="songo">
+          <img :src="coverFiles[index]" alt="Song Image">
+          <div class="texto">
+            <h3>{{ song.name }}</h3>
+            <p>{{ song.artist }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+
+
   <div class="navigation">
       <div >
         <router-link to="/">
@@ -59,7 +83,7 @@ main{
   background-color: #E52535;
   margin: 0; height: 100%; overflow: hidden;
   width: 100vw;
-  height: 100vh;
+
 }
 
 
@@ -86,19 +110,30 @@ h2{
   font-family: 'Montserrat', sans-serif;
   color: white;
   font-weight: 600;
+
 }
 .hero{
-  padding-bottom: 62vh;
+ 
+  margin-top: 5vh;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  display: flex;
+  flex-direction: column;
+  gap: 5vh;
 }
 
 .navigation{
   display: flex;
   justify-content: center ;
   align-items: center;
-  padding-top: 5vh;
+
   gap: 20vw;
   padding-bottom: 1vh;
   bottom: 0;
+  position: fixed;
+  background-color:#E52535;
+  width: 100%;
+  height: 12vh;
 }
 .active{
   padding: 20px;
@@ -107,13 +142,48 @@ h2{
   border-radius: 200px;
 }
 
-audio{
-  display : block !important; 
-  padding: 70px;
-  background-color: blue;
-  width: 100%;
-  height: 100%;
-  z-index: 1000000;
+
+
+.listSong{
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  margin-bottom: 8vh;
 }
 
+.songo{
+  display: flex;
+  color: white;
+  background-color: #7F151D;
+  border-radius: 20px;
+  align-items:center ;
+  gap: 20px;
+}
+
+.songo p{
+  font-weight: 100;
+  font-size: 15px;
+  color: #E52535;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.songo h3{
+  font-weight: 400;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.songo img{
+  width: 40vw;
+  height: 20vw;
+  object-fit: cover;
+  border-radius: 20px;
+  opacity: 50%;
+}
+.texto{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  
+}
 </style>

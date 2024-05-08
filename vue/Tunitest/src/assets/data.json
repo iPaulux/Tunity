@@ -1,10 +1,14 @@
-[
-    { "id": 1, "name": "Rappel - Gazo" },
-    { "id": 2, "name": "Indila hardstyle" },
-    { "id": 3, "name": "Adieu bientot - Columbine" },
-    { "id": 4, "name": "Zipette - Ninho" },
-    { "id": 5, "name": "Dark Aria" },
-    { "id": 6, "name": "Haine & Sex - Gazo" },
-    { "id": 7, "name": "Avec toi - Oboy" },
-    { "id": 8, "name": "Imagine - Carbonne" }
+{
+"playlist1": [
+    { "id": 1, "name": "Rappel", "artist":"Gazo", "imgSrc" : "/src/assets/cover/cover1.jpeg", "mp3src":"/src/assets/music/music1.mp3" },
+    { "id": 2, "name": "Hardstyle", "artist":"Indila", "imgSrc" : "/src/assets/cover/cover2.jpeg"  , "mp3src":"/src/assets/music/music2.mp3" },
+    { "id": 3, "name": "Adieu bientot", "artist":"Columbine", "imgSrc" : "/src/assets/cover/cover3.jpeg" , "mp3src":"/src/assets/music/music3.mp3" },
+    { "id": 4, "name": "Zipette", "artist":"Ninho" , "imgSrc" : "/src/assets/cover/cover4.jpeg", "mp3src":"/src/assets/music/music4.mp3"  },
+    { "id": 5, "name": "Dark Aria", "artist":"Solo Leveling", "imgSrc" : "/src/assets/cover/cover5.jpeg"  , "mp3src":"/src/assets/music/music5.mp3" }
+],
+"playlist2": [
+    { "id": 6, "name": "Haine & Sex", "artist":"Gazo", "imgSrc" : "/src/assets/cover/cover6.jpeg" , "mp3src":"/src/assets/music/music6.mp3"  },
+    { "id": 7, "name": "Avec toi", "artist":"Oboy", "imgSrc" : "/src/assets/cover/cover7.jpeg" , "mp3src":"/src/assets/music/music7.mp3"  },
+    { "id": 8, "name": "Imagine", "artist":"Carbonne", "imgSrc" : "/src/assets/cover/cover8.jpeg"  , "mp3src":"/src/assets/music/music8.mp3" }
 ]
+}

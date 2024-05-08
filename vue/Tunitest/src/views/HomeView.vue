@@ -4,11 +4,15 @@ import { ref, watch, onMounted } from 'vue';
 import { nextTick } from 'vue';
 import axios from 'axios';
 import musicData from '/src/assets/data.json';
+console.log(musicData.playlist1.length)
+
 console.log(musicData)
 //import fs from 'fs/promises';
 
 //import path from 'path';
-
+const currentPlaylist = ref(musicData.playlist1.value)
+console.log(currentPlaylist.value)
+const currentPlaylistNb = ref(musicData.playlist1.length)
 const audio = ref(null);
 const timer = ref(null);
 const timerCount = ref('0:00')
@@ -23,6 +27,9 @@ import music2 from '/src/assets/music/music2.mp3';
 import music3 from '/src/assets/music/music3.mp3';
 import music4 from '/src/assets/music/music4.mp3';
 import music5 from '/src/assets/music/music5.mp3';
+
+
+
 import music6 from '/src/assets/music/music6.mp3';
 import music7 from '/src/assets/music/music7.mp3';
 import music8 from '/src/assets/music/music8.mp3';
@@ -37,9 +44,11 @@ import cover7 from '/src/assets/cover/cover7.jpeg';
 import cover8 from '/src/assets/cover/cover8.jpeg';
 
 
+const Play1mp3 = [music1, music2, music3,music4,music5];
+const Play2mp3 = [music6, music7, music8];
 
-const coverFiles = [cover1, cover2, cover3, cover4,cover5,cover6,cover7,cover8];
-const musicFiles = [music1, music2, music3,music4,music5,music6,music7,music8];
+const Play1img = [cover1, cover2, cover3,cover4,cover5];
+const Play2img = [cover6, cover7, cover8];
 
 
 /*
@@ -85,8 +94,8 @@ console.log(musicFiles);
 
 
 
-let actualAudio = musicFiles[currentMusicIndex.value - 1];
-let actualCover = coverFiles[currentMusicIndex.value - 1];
+let actualAudio = Play1mp3[currentMusicIndex.value - 1];
+let actualCover = Play1img[currentMusicIndex.value - 1];
 
 let previousAudio = null;
 let AudioNow = new Audio(actualAudio);
@@ -99,16 +108,17 @@ const coverImageSrc = ref(actualCover);
 
 
 watch(currentMusicIndex, (newIndex) => {
-  actualAudio = musicFiles[newIndex - 1];
-  actualCover = coverFiles[newIndex - 1];
+  actualAudio = Play1mp3[newIndex - 1];
+  actualCover = Play1img[newIndex - 1];
 });
 
 watch(actualAudio, (newAudio) => {
   AudioNow = new Audio(newAudio);
   audioElement.value = AudioNow;
-  actualCover = coverFiles[musicFiles.indexOf(newAudio)];
+  actualCover = Play1img[Play1mp3.indexOf(newAudio)];
   console.log('up to date');
 });
+
 
 AudioNow.addEventListener('ended', () => {
   nextAudio();
@@ -124,7 +134,10 @@ const nextAudio = () => {
   }
 
   if (isRandom.value == false){
-    if (currentMusicIndex.value === musicFiles.length) {
+
+ 
+    if (currentMusicIndex.value === currentPlaylistNb.value) {
+      console.log("FAIS EL")
     currentMusicIndex.value = 1;
     isPlay.value = true;
   } else {
@@ -133,12 +146,12 @@ const nextAudio = () => {
   }
   }
   else{
-    currentMusicIndex.value = Math.floor(Math.random() * 8)+1
+    currentMusicIndex.value = Math.floor(Math.random() * currentPlaylistNb.length)+1
     isPlay.value = true;
   }
 
 
-  actualAudio = musicFiles[currentMusicIndex.value - 1];
+  actualAudio = Play1mp3[currentMusicIndex.value - 1];
   actualCover = coverFiles[currentMusicIndex.value - 1];
   audioElement.value = new Audio(actualAudio);
   AudioNow.src = actualAudio;
@@ -157,7 +170,7 @@ const prevAudio = () => {
 
   if (isRandom.value == false){
     if (currentMusicIndex.value === 1) {
-    currentMusicIndex.value = musicFiles.length;
+    currentMusicIndex.value = currentPlaylistNb.length;
     isPlay.value = true;
   } else {
     currentMusicIndex.value -= 1;
@@ -165,13 +178,13 @@ const prevAudio = () => {
   }
   }
   else{
-    currentMusicIndex.value = Math.floor(Math.random() * 8)+1
+    currentMusicIndex.value = Math.floor(Math.random() * currentPlaylistNb.length)+1
     console.log(currentMusicIndex.value)
     isPlay.value = true;
   }
 
-  actualAudio = musicFiles[currentMusicIndex.value - 1];
-  actualCover = coverFiles[currentMusicIndex.value - 1];
+  actualAudio = Play1mp3[currentMusicIndex.value - 1];
+  actualCover = Play1img[currentMusicIndex.value - 1];
   AudioNow = new Audio(actualAudio);
   AudioNow.src = actualAudio;
   AudioNow.play();
@@ -241,7 +254,22 @@ const timerSetup = () => {
     timerCount.value = minutes + ":" + seconds;
     console.log(' nope ' + timerCount.value)
 }
+
+
+const checkTimer = () => {
+  if (timerCount.value === duration.value) {
+    nextAudio();
+  }
+};
+
+const moreTime = () =>{
+    time += 10;
+    AudioNow.currentTime += 10;
+  }
+
+
 setInterval(timerSetup, 1000);
+setInterval(checkTimer, 1000);
 </script>
 
 <template>
@@ -254,7 +282,10 @@ setInterval(timerSetup, 1000);
     <div class="single">
       <img :src="coverImageSrc">
       <div class="music">
-        <h2>{{ musicData[currentMusicIndex-1].name }}</h2>
+        <div class="data">
+        <h2>{{ musicData.playlist1[currentMusicIndex-1].name }}</h2>
+        <h3>{{ musicData.playlist1[currentMusicIndex-1].artist }}</h3>
+      </div>
       <div ref="timerSetup" ><p id="timer"> {{ timerCount }} / {{ duration}}</p></div>
         
         <audio id="myaudio" ref="audioElement"   control v-if="AudioNow.src">
@@ -266,7 +297,11 @@ setInterval(timerSetup, 1000);
         <div v-else>Loading audio...</div>
         <div class="musicSet">
         <div class="ctrl">
-          <span id="blank"></span>
+          <svg @click="moreTime" fill="#ffffff" width="20" height="20" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21,15a3,3,0,0,0-3,3v3a3,3,0,0,0,6,0V18A3,3,0,0,0,21,15Zm1,6a1,1,0,0,1-2,0V18a1,1,0,0,1,2,0Z
+          M13,12V7a1,1,0,0,0-2,0v4H8a1,1,0,0,0,0,2h4A1,1,0,0,0,13,12Z
+          M23,2a1,1,0,0,0-1,1V5.374A12,12,0,1,0,7.636,23.182,1.015,1.015,0,0,0,8,23.25a1,1,0,0,0,.364-1.932A10,10,0,1,1,20.636,7H18a1,1,0,0,0,0,2h3a3,3,0,0,0,3-3V3A1,1,0,0,0,23,2Z
+          M15.383,15.076a1,1,0,0,0-1.09.217l-3,3a1,1,0,0,0,1.414,1.414L14,18.414V23a1,1,0,0,0,2,0V16A1,1,0,0,0,15.383,15.076Z"/></svg>
           <div class="ctrl2">
           
           <svg @click="prevAudio" width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -348,14 +383,14 @@ h2{
   font-family: 'Montserrat', sans-serif;
   color: white;
   font-weight: 600;
-  margin-bottom: 25px;
+ 
   
 }
 h3{
   font-family: 'Montserrat', sans-serif;
   color: white;
   font-weight: 300;
-  font-size: 17px;
+
   margin-bottom: 25px;
 }
 
@@ -375,6 +410,7 @@ h3{
 }
 
 .single img{
+  margin-top: -3vh;
   width: 100vw;
   height: 100vw;
   border-radius: 0px 0px 60px 60px;
@@ -461,5 +497,10 @@ p{
   color: white;
   font-weight: 500;
 }
-
+.data{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
 </style>
